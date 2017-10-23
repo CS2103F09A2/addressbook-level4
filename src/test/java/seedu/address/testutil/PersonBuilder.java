@@ -8,6 +8,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PostalCode;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -21,6 +22,7 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_POSTAL_CODE = "600123";
     public static final String DEFAULT_TAGS = "friends";
 
     private Person person;
@@ -31,8 +33,10 @@ public class PersonBuilder {
             Phone defaultPhone = new Phone(DEFAULT_PHONE);
             Email defaultEmail = new Email(DEFAULT_EMAIL);
             Address defaultAddress = new Address(DEFAULT_ADDRESS);
+            PostalCode defaultPostalCode = new PostalCode(DEFAULT_POSTAL_CODE);
             Set<Tag> defaultTags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
-            this.person = new Person(defaultName, defaultPhone, defaultEmail, defaultAddress, defaultTags);
+            this.person = new Person(defaultName, defaultPhone, defaultEmail, defaultAddress, defaultPostalCode,
+                    defaultTags);
         } catch (IllegalValueException ive) {
             throw new AssertionError("Default person's values are invalid.");
         }
@@ -89,6 +93,18 @@ public class PersonBuilder {
             this.person.setPhone(new Phone(phone));
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("phone is expected to be unique.");
+        }
+        return this;
+    }
+
+    /**
+     * Sets the {@code PostalCode} of the {@code PostalCode} that we are building.
+     */
+    public PersonBuilder withPostalCode(String postalcode) {
+        try {
+            this.person.setPostalcode(new PostalCode(postalcode));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("phostalcode is expected to be unique.");
         }
         return this;
     }

@@ -38,6 +38,7 @@ public class BrowserPanel extends UiPart<Region> {
         getRoot().setOnKeyPressed(Event::consume);
 
         loadDefaultPage();
+        //loadPage("https://www.accuweather.com/en/sg/singapore/300597/hourly-weather-forecast/300597");
         registerAsAnEventHandler(this);
     }
 

@@ -7,7 +7,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
 /**
- * A read-only immutable interface for a Person in the addressbook.
+ * A read-only immutable interface for an Attractions in the Tourist-Book.
  * Implementations should guarantee: details are present and not null, field values are validated.
  */
 public interface ReadOnlyPerson {
@@ -22,6 +22,8 @@ public interface ReadOnlyPerson {
     Address getAddress();
     ObjectProperty<UniqueTagList> tagProperty();
     Set<Tag> getTags();
+    ObjectProperty<PostalCode> postalcodeProperty();
+    PostalCode getPostalCode();
 
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
@@ -32,7 +34,8 @@ public interface ReadOnlyPerson {
                 && other.getName().equals(this.getName()) // state checks here onwards
                 && other.getPhone().equals(this.getPhone())
                 && other.getEmail().equals(this.getEmail())
-                && other.getAddress().equals(this.getAddress()));
+                && other.getAddress().equals(this.getAddress())
+                && other.getPostalCode().equals(this.getPostalCode()));
     }
 
     /**
@@ -47,6 +50,8 @@ public interface ReadOnlyPerson {
                 .append(getEmail())
                 .append(" Address: ")
                 .append(getAddress())
+                .append(" PostalCode: ")
+                .append(getPostalCode())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();

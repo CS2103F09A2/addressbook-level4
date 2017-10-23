@@ -1,5 +1,8 @@
 package seedu.address.ui;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,6 +17,11 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
+    private static String[] colors = { "red", "blue", "orange", "brown", "green", "grey", "burlywood", "coral",
+        "cyan", "dodgerblue", "olivedrab", "turquoise", "darksalmon", "slategray", "teal", "mediumturquoise",
+        "lawngreen", "darkcyan", "saddlebrown", "darkblue"};
+    private static HashMap<String, String> tagColors = new HashMap<String, String>();
+    private static Random random = new Random();
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -36,6 +44,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label address;
     @FXML
+    private Label postalcode;
+    @FXML
     private Label email;
     @FXML
     private FlowPane tags;
@@ -48,6 +58,16 @@ public class PersonCard extends UiPart<Region> {
         bindListeners(person);
     }
 
+    /** Assign a random color from String[] colors
+     *  Ensure each tag has a different color by using HashMap tagColors
+     */
+    private static String getColorForTag(String tagValue) {
+        if (!tagColors.containsKey(tagValue)) {
+            tagColors.put(tagValue, colors[random.nextInt(colors.length)]);
+        }
+        return tagColors.get(tagValue);
+    }
+
     /**
      * Binds the individual UI elements to observe their respective {@code Person} properties
      * so that they will be notified of any changes.
@@ -56,15 +76,25 @@ public class PersonCard extends UiPart<Region> {
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
         phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
         address.textProperty().bind(Bindings.convert(person.addressProperty()));
+        postalcode.textProperty().bind(Bindings.convert(person.postalcodeProperty()));
         email.textProperty().bind(Bindings.convert(person.emailProperty()));
         person.tagProperty().addListener((observable, oldValue, newValue) -> {
             tags.getChildren().clear();
-            person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+            //person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+            initTags(person);
         });
     }
 
+    /**
+     * Assign a tag with color to a person
+     */
     private void initTags(ReadOnlyPerson person) {
-        person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        //person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        person.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.setStyle("-fx-background-color: " + getColorForTag(tag.tagName));
+            tags.getChildren().add(tagLabel);
+        });
     }
 
     @Override
